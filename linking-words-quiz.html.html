@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Linking Words Quiz – Avloni</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f6f4ee;--card:#fff;--ink:#1f2a37;--mute:#64707d;--acc:#2f5d50;--accT:#fff;--ok:#2e7d4f;--okBg:#e3f2e8;--no:#b3392f;--noBg:#f9e5e2;--line:#dcd8cc}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15191d;--card:#1e242a;--ink:#e8ecef;--mute:#9aa6b0;--acc:#6fb59f;--accT:#10201b;--ok:#6fcf97;--okBg:#1d3327;--no:#f08a80;--noBg:#3a2321;--line:#333b43}}
+:root[data-theme="dark"]{--bg:#15191d;--card:#1e242a;--ink:#e8ecef;--mute:#9aa6b0;--acc:#6fb59f;--accT:#10201b;--ok:#6fcf97;--okBg:#1d3327;--no:#f08a80;--noBg:#3a2321;--line:#333b43}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.7rem;margin:.2em 0}
+.sub{color:var(--mute);font-family:system-ui,sans-serif;font-size:.95rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-top:16px}
+button{font:inherit;font-family:system-ui,sans-serif;cursor:pointer}
+.btn{background:var(--acc);color:var(--accT);border:0;border-radius:8px;padding:12px 22px;font-size:1rem;font-weight:600}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0;font-size:1.05rem}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt.ok{background:var(--okBg);border-color:var(--ok)}
+.opt.no{background:var(--noBg);border-color:var(--no)}
+.top{display:flex;justify-content:space-between;font-family:system-ui,sans-serif;font-size:.9rem;color:var(--mute)}
+.bar{height:6px;background:var(--line);border-radius:3px;margin:8px 0 0;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);width:100%}
+.q{font-size:1.3rem;margin:14px 0 8px}
+.exp{margin-top:14px;padding:12px 14px;border-left:4px solid var(--acc);background:var(--bg);font-family:system-ui,sans-serif;font-size:.97rem}
+.big{font-size:3rem;font-weight:700;margin:.1em 0}
+.rule{font-family:system-ui,sans-serif;font-size:.95rem;margin:4px 0}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div id="start">
+  <div class="sub">National Institute of Pedagogical Excellence named after Abdulla Avloni</div>
+  <h1>Linking Words Quiz</h1>
+  <p class="sub">and · but · so · because · however · when · until</p>
+  <div class="card">
+    <p><b>How it works</b></p>
+    <p class="rule">• 20 questions, 20 seconds each.</p>
+    <p class="rule">• Choose the best word for the gap.</p>
+    <p class="rule">• After every answer you see the correct word and a short explanation.</p>
+    <p class="rule">• Questions come in a new random order each time.</p>
+    <p><input id="nm" maxlength="24" placeholder="Your name" style="width:100%;padding:12px;font:inherit;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)"></p><p><button class="btn" id="go">Start</button></p>
+  </div>
+</div>
+
+<div id="game" class="hide">
+  <div class="top"><span id="num"></span><span id="score"></span><span id="time"></span></div>
+  <div class="bar"><i id="fill"></i></div>
+  <div class="card">
+    <div class="q" id="q"></div>
+    <div id="opts"></div>
+    <div id="exp" class="exp hide"></div>
+    <p><button class="btn hide" id="next">Next</button></p>
+  </div>
+</div>
+
+<div id="end" class="hide">
+  <h1>Finished</h1>
+  <div class="card">
+    <div class="big" id="final"></div>
+    <p id="msg"></p>
+    <p><button class="btn" id="again">Play again</button></p>
+  </div>
+  <div class="card">
+    <p><b>Quick rule</b></p>
+    <p class="rule"><b>and</b> = adds information</p>
+    <p class="rule"><b>but / however</b> = contrast</p>
+    <p class="rule"><b>because</b> = reason</p>
+    <p class="rule"><b>so</b> = result</p>
+    <p class="rule"><b>when</b> = time</p>
+    <p class="rule"><b>until</b> = up to a time</p>
+  </div>
+</div>
+</div>
+
+<script>
+var W=["and","but","so","because","However","when","until"];
+// [sentence, correct word, explanation]
+var Q=[
+["She teaches English in the morning ___ she coordinates projects in the afternoon.","and","\"and\" adds a second piece of information about the same person."],
+["The internet was down, ___ we could not start the online lesson.","so","\"so\" shows a result. The problem (no internet) led to the result."],
+["I like robotics, ___ I don't like programming.","but","\"but\" shows contrast between two different ideas."],
+["He was late for work ___ his bus broke down.","because","\"because\" gives the reason. Why was he late? The bus broke down."],
+["The test was difficult. ___, most students passed it.","However","\"However\" starts a new sentence and shows contrast. Use a comma after it."],
+["Please keep your phones silent ___ the lesson is over.","until","\"until\" means up to a certain time. After the lesson, phones are allowed."],
+["We were walking to the school ___ it started to rain.","when","\"when\" connects two events at the same time."],
+["The room was very hot, ___ we opened the windows.","so","\"so\" shows what we did as a result of the heat."],
+["The course is expensive, ___ it is very useful.","but","\"but\" shows contrast: expensive is negative, useful is positive."],
+["I will call you ___ I arrive at the airport.","when","\"when\" connects a future action to a point in time."],
+["Our team is small. ___, we finished the project on time.","However","\"However\" shows a surprising contrast with the previous sentence."],
+["We can't start the meeting ___ everyone arrives.","until","\"until\" shows we must wait up to a certain moment."],
+["The students were tired ___ they had a long exam.","because","\"because\" gives the reason for being tired."],
+["I forgot my laptop, ___ I borrowed one from a colleague.","so","\"so\" shows the result of forgetting the laptop."],
+["She likes tea, ___ her sister prefers coffee.","but","\"but\" shows a difference between two people."],
+["He opened the door ___ he walked into the hall.","and","\"and\" connects two actions in a sequence."],
+["We chose this hotel ___ it is close to the conference center.","because","\"because\" gives the reason for our choice."],
+["The training started late ___ the trainer was stuck in traffic.","because","Ask: Why did it start late? The answer (traffic) is the reason."],,
+["The projector wasn't working, ___ we used the whiteboard.","so","\"so\" shows a result. The problem led to an action."],,
+["I wanted to attend the seminar, ___ I had an important deadline.","but","\"but\" shows contrast between what I wanted and what I could do."],,
+["Please wait here ___ the manager is ready to see you.","until","The waiting continues up to a certain moment, then stops."],,
+["She sent the report ___ she finished the meeting.","when","\"when\" connects two events in time."],,
+["The results were excellent. ___, the director asked for more data.","However","\"However\" starts a new sentence and shows contrast. Comma after it."],,
+["He speaks English, Russian ___ Uzbek.","and","In a list, we use commas, and \"and\" before the last item."],,
+["Which word shows a contrast (the opposite idea)?","but","\"but\" (and \"however\") show contrast."],,
+["Which word shows a reason?","because","\"because\" answers the question Why?"],,
+["Which word shows a result?","so","\"so\" shows what happened as a result."],
+];
+var T=20,i=0,sc=0,list=[],tm=null,left=T,locked=false;
+function $(id){return document.getElementById(id)}
+function shuffle(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1));var t=a[k];a[k]=a[j];a[j]=t}return a}
+function show(id){["start","game","end"].forEach(function(x){$(x).classList.toggle("hide",x!==id)})}
+function opts(c){
+  var set=[c];
+  shuffle(W).forEach(function(w){if(set.length<4&&w.toLowerCase()!==c.toLowerCase())set.push(w)});
+  return shuffle(set);
+}
+function start(){list=shuffle(Q).slice(0,20);i=0;sc=0;show("game");load()}
+function load(){
+  locked=false;var q=list[i];
+  $("num").textContent="Question "+(i+1)+" / "+list.length;
+  $("score").textContent="Score: "+sc;
+  $("q").textContent=q[0];
+  $("exp").classList.add("hide");$("next").classList.add("hide");
+  var box=$("opts");box.innerHTML="";
+  opts(q[1]).forEach(function(w){
+    var b=document.createElement("button");b.className="opt";b.textContent=w;
+    b.onclick=function(){pick(w)};box.appendChild(b);
+  });
+  left=T;tick();clearInterval(tm);tm=setInterval(function(){left--;tick();if(left<=0)pick(null)},1000);
+}
+function tick(){$("time").textContent=left+" s";$("fill").style.width=(left/T*100)+"%"}
+function pick(w){
+  if(locked)return;locked=true;clearInterval(tm);
+  var q=list[i];var good=w!==null&&w.toLowerCase()===q[1].toLowerCase();
+  if(good)sc+=1;
+  Array.prototype.forEach.call($("opts").children,function(b){
+    b.disabled=true;
+    if(b.textContent.toLowerCase()===q[1].toLowerCase())b.classList.add("ok");
+    else if(b.textContent===w)b.classList.add("no");
+  });
+  $("score").textContent="Score: "+sc;
+  var e=$("exp");e.classList.remove("hide");
+  e.innerHTML=(w===null?"<b>Time is up.</b> ":good?"<b>Correct.</b> ":"<b>Not quite.</b> ")+"Answer: <b></b>. ";
+  e.querySelector("b:last-of-type").textContent=q[1];
+  e.appendChild(document.createTextNode(q[2]));
+  $("next").textContent=i===list.length-1?"See result":"Next";
+  $("next").classList.remove("hide");
+}
+function finish(){
+  show("end");var p=Math.round(sc/list.length*100);
+  var nm=$("nm").value.trim();$("final").textContent=(nm?nm+": ":"")+sc+" / "+list.length;
+  $("msg").textContent=p>=85?"Excellent work.":p>=60?"Good. Read the quick rule below and try again.":"Keep practicing. Read the quick rule below and try again.";
+}
+$("go").onclick=start;$("again").onclick=start;
+$("next").onclick=function(){i++;if(i>=list.length)finish();else load()};
+</script>
+</body>
+</html>
