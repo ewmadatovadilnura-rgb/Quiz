@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 5 Grammar Quiz – Avloni</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f6f4ee;--card:#fff;--ink:#1f2a37;--mute:#64707d;--acc:#2f5d50;--accT:#fff;--ok:#2e7d4f;--okBg:#e3f2e8;--no:#b3392f;--noBg:#f9e5e2;--line:#dcd8cc}
+@media(prefers-color-scheme:dark){:root{--bg:#15191d;--card:#1e242a;--ink:#e8ecef;--mute:#9aa6b0;--acc:#6fb59f;--accT:#10201b;--ok:#6fcf97;--okBg:#1d3327;--no:#f08a80;--noBg:#3a2321;--line:#333b43}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.7rem;margin:.2em 0}
+.sub{color:var(--mute);font-family:system-ui,sans-serif;font-size:.95rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-top:16px}
+button{font:inherit;font-family:system-ui,sans-serif;cursor:pointer}
+.btn{background:var(--acc);color:var(--accT);border:0;border-radius:8px;padding:12px 22px;font-size:1rem;font-weight:600}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0;font-size:1.05rem}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt.ok{background:var(--okBg);border-color:var(--ok)}
+.opt.no{background:var(--noBg);border-color:var(--no)}
+.top{display:flex;justify-content:space-between;font-family:system-ui,sans-serif;font-size:.9rem;color:var(--mute)}
+.bar{height:6px;background:var(--line);border-radius:3px;margin:8px 0 0;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);width:100%}
+.q{font-size:1.3rem;margin:14px 0 8px}
+.exp{margin-top:14px;padding:12px 14px;border-left:4px solid var(--acc);background:var(--bg);font-family:system-ui,sans-serif;font-size:.97rem}
+.big{font-size:2.4rem;font-weight:700;margin:.1em 0}
+.rule{font-family:system-ui,sans-serif;font-size:.95rem;margin:4px 0}
+input{font:inherit;width:100%;padding:12px;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.hide{display:none}
+#time,.bar{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div id="start">
+  <div class="sub">Avloni staff English session</div>
+  <h1>Unit 5 Grammar Quiz</h1>
+  <p class="sub">can / can't · was / were / could</p>
+  <div class="card">
+    <p><b>How it works</b></p>
+    <p class="rule">• 20 questions, 30 seconds each.</p>
+    <p class="rule">• Choose the correct answer.</p>
+    <p class="rule">• After every answer you see the correct answer and a short explanation.</p>
+    <p class="rule">• Questions come in a random order each time.</p>
+    <p><input id="nm" maxlength="24" placeholder="Your name"></p>
+    <p><button class="btn" id="go">Start</button></p>
+  </div>
+</div>
+
+<div id="game" class="hide">
+  <div class="top"><span id="num"></span><span id="score"></span><span id="time"></span></div>
+  <div class="bar"><i id="fill"></i></div>
+  <div class="card">
+    <div class="q" id="q"></div>
+    <div id="opts"></div>
+    <div id="exp" class="exp hide"></div>
+    <p><button class="btn hide" id="next">Next</button></p>
+  </div>
+</div>
+
+<div id="end" class="hide">
+  <h1>Finished</h1>
+  <div class="card">
+    <div class="big" id="final"></div>
+    <p id="msg"></p>
+    <p><button class="btn" id="again">Play again</button></p>
+  </div>
+  <div class="card">
+    <p><b>Quick rules</b></p>
+    <p class="rule"><b>can / can't</b> = ability now (I can swim)</p>
+    <p class="rule"><b>could / couldn't</b> = ability in the past (I could swim when I was five)</p>
+    <p class="rule">After can / could we use the base verb: <b>She can swim.</b></p>
+    <p class="rule"><b>was</b> = I, he, she, it · <b>were</b> = you, we, they</p>
+  </div>
+</div>
+</div>
+
+<script>
+// [sentence, correct answer, other 3 options, explanation]
+var Q=[
+["My brother ___ swim when he was five, but now he swims every day.", "could", ["can", "can't", "couldn't"], "\"could\" is the past of \"can\". It shows ability in the past (when he was five)."],
+["I ___ speak three languages: English, Uzbek and Russian.", "can", ["could", "couldn't", "was"], "\"can\" shows ability now."],
+["Sorry, I ___ come to the meeting tomorrow. I have a training.", "can't", ["couldn't", "can", "was"], "\"can't\" shows that something is not possible now or in the future."],
+["She ___ find her keys yesterday, so she was late.", "couldn't", ["can't", "can", "wasn't"], "\"couldn't\" is the negative of \"could\". It shows no ability or no possibility in the past."],
+["___ you swim when you were a child?", "Could", ["Can", "Are", "Do"], "The sentence is about the past (when you were a child), so we use \"Could\"."],
+["He ___ drive a car because he is only 15.", "can't", ["couldn't", "can", "isn't"], "The sentence is about now, so we use \"can't\"."],
+["Which sentence is correct?", "She can swim.", ["She can swims.", "She cans swim.", "She can to swim."], "After \"can\" we use the base verb. We do not add -s or \"to\"."],
+["We ___ at the conference last week.", "were", ["was", "are", "is"], "\"were\" is used with we, you, they in the past."],
+["She ___ born in Samarkand in 1995.", "was", ["were", "is", "are"], "\"was\" is used with I, he, she, it in the past."],
+["___ you at home last night?", "Were", ["Was", "Are", "Did"], "\"Were\" is used with \"you\" in past questions."],
+["The hotel ___ expensive. It was cheap.", "wasn't", ["weren't", "isn't", "didn't"], "\"wasn't\" is the negative of \"was\". The subject is \"the hotel\" (it)."],
+["Yesterday ___ a holiday, so the office was closed.", "was", ["were", "is", "did"], "The subject is \"yesterday\" (it), so we use \"was\"."],
+["The rooms ___ clean, so we asked for new ones.", "weren't", ["wasn't", "aren't", "didn't"], "The subject \"the rooms\" is plural (they), so we use \"weren't\"."],
+["Was he a teacher? Yes, he ___.", "was", ["were", "is", "did"], "In a short answer we repeat the verb: Yes, he was."],
+["I ___ swim when I was a child, but I can swim well now.", "couldn't", ["could", "can't", "wasn't"], "\"couldn't\" is the negative past of \"can\". It shows no ability in the past."],
+["___ they at the party last night?", "Were", ["Was", "Are", "Did"], "\"Were\" is used with \"they\" in past questions."],
+["He ___ happy yesterday. He was very tired.", "wasn't", ["weren't", "isn't", "couldn't"], "\"wasn't\" is the negative of \"was\" (he)."],
+["___ you speak Russian?", "Can", ["Are", "Were", "Was"], "We use \"Can\" to ask about ability now."],
+["I ___ at work yesterday. I stayed at home.", "wasn't", ["weren't", "can't", "didn't"], "\"wasn't\" is the negative of \"was\" (I)."],
+["My grandfather ___ play chess very well when he was young.", "could", ["can", "can't", "were"], "\"could\" shows ability in the past (when he was young)."]
+];
+var T=30,i=0,sc=0,list=[],tm=null,left=T,locked=false;
+function $(id){return document.getElementById(id)}
+function shuffle(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1));var t=a[k];a[k]=a[j];a[j]=t}return a}
+function show(id){["start","game","end"].forEach(function(x){$(x).classList.toggle("hide",x!==id)})}
+function start(){list=shuffle(Q);i=0;sc=0;show("game");load()}
+function load(){
+  locked=false;var q=list[i];
+  $("num").textContent="Question "+(i+1)+" / "+list.length;
+  $("score").textContent="Score: "+sc;
+  $("q").textContent=q[0];
+  $("exp").classList.add("hide");$("next").classList.add("hide");
+  var box=$("opts");box.innerHTML="";
+  shuffle([q[1]].concat(q[2])).forEach(function(w){
+    var b=document.createElement("button");b.className="opt";b.textContent=w;
+    b.onclick=function(){pick(w)};box.appendChild(b);
+  });
+  left=T;tick();clearInterval(tm);tm=setInterval(function(){left--;tick();if(left<=0)pick(null)},1000);
+}
+function tick(){$("time").textContent=left+" s";$("fill").style.width=(left/T*100)+"%"}
+function pick(w){
+  if(locked)return;locked=true;clearInterval(tm);
+  var q=list[i];var good=w!==null&&w===q[1];
+  if(good)sc+=1;
+  Array.prototype.forEach.call($("opts").children,function(b){
+    b.disabled=true;
+    if(b.textContent===q[1])b.classList.add("ok");
+    else if(b.textContent===w)b.classList.add("no");
+  });
+  $("score").textContent="Score: "+sc;
+  var e=$("exp");e.classList.remove("hide");
+  e.innerHTML=(w===null?"<b>Time is up.</b> ":good?"<b>Correct.</b> ":"<b>Not quite.</b> ")+"Answer: <b></b>. ";
+  e.querySelector("b:last-of-type").textContent=q[1];
+  e.appendChild(document.createTextNode(q[3]));
+  $("next").textContent=i===list.length-1?"See result":"Next";
+  $("next").classList.remove("hide");
+}
+function finish(){
+  show("end");var p=Math.round(sc/list.length*100);var nm=$("nm").value.trim();
+  $("final").textContent=(nm?nm+": ":"")+sc+" / "+list.length;
+  $("msg").textContent=p>=85?"Excellent work.":p>=60?"Good. Read the quick rules below and try again.":"Keep practicing. Read the quick rules below and try again.";
+}
+$("go").onclick=start;$("again").onclick=start;
+$("next").onclick=function(){i++;if(i>=list.length)finish();else load()};
+</script>
+</body>
+</html>

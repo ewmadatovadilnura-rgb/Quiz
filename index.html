@@ -30,6 +30,7 @@ button{font:inherit;font-family:system-ui,sans-serif;cursor:pointer}
 .big{font-size:3rem;font-weight:700;margin:.1em 0}
 .rule{font-family:system-ui,sans-serif;font-size:.95rem;margin:4px 0}
 .hide{display:none}
+#time,.bar{display:none}
 </style>
 </head>
 <body>
@@ -40,7 +41,7 @@ button{font:inherit;font-family:system-ui,sans-serif;cursor:pointer}
   <p class="sub">and · but · so · because · however · when · until</p>
   <div class="card">
     <p><b>How it works</b></p>
-    <p class="rule">• 20 questions, 20 seconds each.</p>
+    <p class="rule">• 20 questions, 30 seconds each.</p>
     <p class="rule">• Choose the best word for the gap.</p>
     <p class="rule">• After every answer you see the correct word and a short explanation.</p>
     <p class="rule">• Questions come in a new random order each time.</p>
@@ -110,7 +111,7 @@ var Q=[
 ["Which word shows a reason?","because","\"because\" answers the question Why?"],,
 ["Which word shows a result?","so","\"so\" shows what happened as a result."],
 ];
-var T=20,i=0,sc=0,list=[],tm=null,left=T,locked=false;
+var T=30,i=0,sc=0,list=[],tm=null,left=T,locked=false;
 function $(id){return document.getElementById(id)}
 function shuffle(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1));var t=a[k];a[k]=a[j];a[j]=t}return a}
 function show(id){["start","game","end"].forEach(function(x){$(x).classList.toggle("hide",x!==id)})}
