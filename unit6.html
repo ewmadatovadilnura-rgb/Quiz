@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 6 Grammar Quiz – Avloni</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f6f4ee;--card:#fff;--ink:#1f2a37;--mute:#64707d;--acc:#2f5d50;--accT:#fff;--ok:#2e7d4f;--okBg:#e3f2e8;--no:#b3392f;--noBg:#f9e5e2;--line:#dcd8cc}
+@media(prefers-color-scheme:dark){:root{--bg:#15191d;--card:#1e242a;--ink:#e8ecef;--mute:#9aa6b0;--acc:#6fb59f;--accT:#10201b;--ok:#6fcf97;--okBg:#1d3327;--no:#f08a80;--noBg:#3a2321;--line:#333b43}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.7rem;margin:.2em 0}
+.sub{color:var(--mute);font-family:system-ui,sans-serif;font-size:.95rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-top:16px}
+button{font:inherit;font-family:system-ui,sans-serif;cursor:pointer}
+.btn{background:var(--acc);color:var(--accT);border:0;border-radius:8px;padding:12px 22px;font-size:1rem;font-weight:600}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0;font-size:1.05rem}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt.ok{background:var(--okBg);border-color:var(--ok)}
+.opt.no{background:var(--noBg);border-color:var(--no)}
+.top{display:flex;justify-content:space-between;font-family:system-ui,sans-serif;font-size:.9rem;color:var(--mute)}
+.bar{height:6px;background:var(--line);border-radius:3px;margin:8px 0 0;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);width:100%}
+.q{font-size:1.3rem;margin:14px 0 8px}
+.exp{margin-top:14px;padding:12px 14px;border-left:4px solid var(--acc);background:var(--bg);font-family:system-ui,sans-serif;font-size:.97rem}
+.big{font-size:2.4rem;font-weight:700;margin:.1em 0}
+.rule{font-family:system-ui,sans-serif;font-size:.95rem;margin:4px 0}
+input{font:inherit;width:100%;padding:12px;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.hide{display:none}
+#time,.bar{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div id="start">
+  <div class="sub">Avloni staff English session</div>
+  <h1>Unit 6 Grammar Quiz</h1>
+  <p class="sub">Past Simple (regular and irregular verbs) · time expressions · however · when · until</p>
+  <div class="card">
+    <p><b>How it works</b></p>
+    <p class="rule">• 20 questions, 30 seconds each.</p>
+    <p class="rule">• Choose the correct answer.</p>
+    <p class="rule">• After every answer you see the correct answer and a short explanation.</p>
+    <p class="rule">• Questions come in a random order each time.</p>
+    <p><input id="nm" maxlength="24" placeholder="Your name"></p>
+    <p><button class="btn" id="go">Start</button></p>
+  </div>
+</div>
+
+<div id="game" class="hide">
+  <div class="top"><span id="num"></span><span id="score"></span><span id="time"></span></div>
+  <div class="bar"><i id="fill"></i></div>
+  <div class="card">
+    <div class="q" id="q"></div>
+    <div id="opts"></div>
+    <div id="exp" class="exp hide"></div>
+    <p><button class="btn hide" id="next">Next</button></p>
+  </div>
+</div>
+
+<div id="end" class="hide">
+  <h1>Finished</h1>
+  <div class="card">
+    <div class="big" id="final"></div>
+    <p id="msg"></p>
+    <p><button class="btn" id="again">Play again</button></p>
+  </div>
+  <div class="card">
+    <p><b>Quick rules</b></p>
+    <p class="rule"><b>Regular verbs:</b> add -ed (work → worked). Check spelling: study → studied, stop → stopped.</p>
+    <p class="rule"><b>Irregular verbs:</b> learn them: go → went, have → had, see → saw, buy → bought, write → wrote.</p>
+    <p class="rule"><b>Negative and questions:</b> didn't / Did + base verb (He didn't like it. Did you work?)</p>
+    <p class="rule"><b>Time words:</b> yesterday, last week, two years ago, in 2001.</p>
+    <p class="rule"><b>however</b> = contrast · <b>when</b> = time · <b>until</b> = up to a time · <b>so</b> = result</p>
+  </div>
+</div>
+</div>
+
+<script>
+// [sentence, correct answer, other 3 options, explanation]
+var Q=[
+["My uncle ___ to Tashkent in 2010.", "moved", ["move", "moves", "moving"], "For regular verbs in the Past Simple we add -ed: move → moved."],
+["We ___ the museum last Sunday.", "visited", ["visit", "visits", "visiting"], "Past Simple of regular verbs ends in -ed: visit → visited."],
+["She ___ medicine at the university.", "studied", ["studyed", "studies", "study"], "When a verb ends in consonant + y, we change y to i and add -ed: study → studied."],
+["The bus ___ at the corner.", "stopped", ["stoped", "stopt", "stops"], "With short verbs ending in one vowel + one consonant, we double the consonant: stop → stopped."],
+["I ___ the film. It was boring.", "didn't like", ["didn't liked", "not liked", "wasn't like"], "Negative: didn't + base verb. The verb does not change: didn't like."],
+["___ you work yesterday?", "Did", ["Do", "Were", "Was"], "Past Simple questions use Did + subject + base verb."],
+["Did she ___ the email?", "answer", ["answered", "answers", "answering"], "After \"did\" we use the base verb: Did she answer?"],
+["My manager ___ me a new laptop.", "gave", ["gived", "give", "gaved"], "\"give\" is irregular. The Past Simple is \"gave\"."],
+["We ___ to Samarkand last summer.", "went", ["goed", "gone", "go"], "\"go\" is irregular. The Past Simple is \"went\"."],
+["She ___ a letter to the director yesterday.", "wrote", ["writed", "written", "write"], "\"write\" is irregular. The Past Simple is \"wrote\"."],
+["I ___ a new phone last week.", "bought", ["buyed", "buy", "boughted"], "\"buy\" is irregular. The Past Simple is \"bought\"."],
+["They ___ a great film on Saturday.", "saw", ["seen", "seed", "see"], "\"see\" is irregular. The Past Simple is \"saw\"."],
+["She ___ a delicious cake for the party.", "made", ["maked", "make", "makes"], "\"make\" is irregular. The Past Simple is \"made\"."],
+["I met him two years ___.", "ago", ["before", "last", "in"], "\"ago\" goes after a time period (two years ago) and shows how far back in the past."],
+["She started her company ___ 2005.", "in", ["on", "at", "ago"], "We use \"in\" with years: in 2005."],
+["___ week we visited the museum.", "Last", ["Ago", "In", "On"], "\"Last week\" is a past time expression. We use it without a preposition."],
+["The shop was small. ___, it had everything we needed.", "However", ["Until", "When", "Because"], "\"However\" starts a new sentence and shows contrast. We put a comma after it."],
+["I didn't have a smartphone ___ I was 20.", "until", ["so", "but", "because"], "\"until\" means up to a certain time. I got my first smartphone at 20."],
+["I began to learn English ___ I was ten.", "when", ["until", "so", "However"], "\"when\" connects an event to a time."],
+["The weather was bad, ___ we stayed inside.", "so", ["but", "until", "However"], "\"so\" shows a result. Bad weather led to staying inside."]
+];
+var T=30,i=0,sc=0,list=[],tm=null,left=T,locked=false;
+function $(id){return document.getElementById(id)}
+function shuffle(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1));var t=a[k];a[k]=a[j];a[j]=t}return a}
+function show(id){["start","game","end"].forEach(function(x){$(x).classList.toggle("hide",x!==id)})}
+function start(){list=shuffle(Q);i=0;sc=0;show("game");load()}
+function load(){
+  locked=false;var q=list[i];
+  $("num").textContent="Question "+(i+1)+" / "+list.length;
+  $("score").textContent="Score: "+sc;
+  $("q").textContent=q[0];
+  $("exp").classList.add("hide");$("next").classList.add("hide");
+  var box=$("opts");box.innerHTML="";
+  shuffle([q[1]].concat(q[2])).forEach(function(w){
+    var b=document.createElement("button");b.className="opt";b.textContent=w;
+    b.onclick=function(){pick(w)};box.appendChild(b);
+  });
+  left=T;tick();clearInterval(tm);tm=setInterval(function(){left--;tick();if(left<=0)pick(null)},1000);
+}
+function tick(){$("time").textContent=left+" s";$("fill").style.width=(left/T*100)+"%"}
+function pick(w){
+  if(locked)return;locked=true;clearInterval(tm);
+  var q=list[i];var good=w!==null&&w===q[1];
+  if(good)sc+=1;
+  Array.prototype.forEach.call($("opts").children,function(b){
+    b.disabled=true;
+    if(b.textContent===q[1])b.classList.add("ok");
+    else if(b.textContent===w)b.classList.add("no");
+  });
+  $("score").textContent="Score: "+sc;
+  var e=$("exp");e.classList.remove("hide");
+  e.innerHTML=(w===null?"<b>Time is up.</b> ":good?"<b>Correct.</b> ":"<b>Not quite.</b> ")+"Answer: <b></b>. ";
+  e.querySelector("b:last-of-type").textContent=q[1];
+  e.appendChild(document.createTextNode(q[3]));
+  $("next").textContent=i===list.length-1?"See result":"Next";
+  $("next").classList.remove("hide");
+}
+function finish(){
+  show("end");var p=Math.round(sc/list.length*100);var nm=$("nm").value.trim();
+  $("final").textContent=(nm?nm+": ":"")+sc+" / "+list.length;
+  $("msg").textContent=p>=85?"Excellent work.":p>=60?"Good. Read the quick rules below and try again.":"Keep practicing. Read the quick rules below and try again.";
+}
+$("go").onclick=start;$("again").onclick=start;
+$("next").onclick=function(){i++;if(i>=list.length)finish();else load()};
+</script>
+</body>
+</html>
